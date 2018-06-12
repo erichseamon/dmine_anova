@@ -5,15 +5,24 @@
 
 
 
-Southern_ID_sumloss <- read.csv("/dmine/data/USDA/agmesh-scenarios/Allstates/summaries/PNW_summary_all.csv")
+Southern_ID_sumloss <- read.csv(text=getURL("https://raw.githubusercontent.com/erichseamon/dmine_anova/master/PNW_summary_all.csv"), header = TRUE)
+#-data from local server
+#Southern_ID_sumloss <- read.csv("/dmine/data/USDA/agmesh-scenarios/Allstates/summaries/PNW_summary_all.csv")
+
 Southern_ID_sumloss_all_sum  <- aggregate(loss ~ year + damagecause + county + commodity,  Southern_ID_sumloss, sum)
 Southern_ID_count_all_count  <- aggregate(count ~ year + damagecause + county + commodity,  Southern_ID_sumloss, sum)
 Southern_ID_sumloss_all_sum <- Southern_ID_sumloss_all_sum[Southern_ID_sumloss_all_sum$loss >= 1, ]
 
 
 #-Loading all WHEAT claims for the palouse from 1989-2015
-palouse_sumloss <- read.csv("/dmine/data/USDA/agmesh-scenarios/Allstates/summaries/Palouse_summary_sumloss.csv")
-palouse_counts <- read.csv("/dmine/data/USDA/agmesh-scenarios/Allstates/summaries/Palouse_summary_counts.csv")
+
+
+palouse_sumloss <- read.csv("https://raw.githubusercontent.com/erichseamon/dmine_anova/master/Palouse_summary_sumloss.csv")
+palouse_counts <- read.csv("https://raw.githubusercontent.com/erichseamon/dmine_anova/master/Palouse_summary_counts.csv")
+
+#added from local server
+#palouse_sumloss <- read.csv("/dmine/data/USDA/agmesh-scenarios/Allstates/summaries/Palouse_summary_sumloss.csv")
+#palouse_counts <- read.csv("/dmine/data/USDA/agmesh-scenarios/Allstates/summaries/Palouse_summary_counts.csv")
 
 
 #box cox 
@@ -127,3 +136,5 @@ wht <- glht(amod, linfct = mcp(damagecause = "Tukey"))
 
 summary(fit) #Type I ANOVA table
 drop1(fit,~.,test="F") # type III SS and Ftests
+
+
