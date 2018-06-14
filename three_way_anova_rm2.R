@@ -7,6 +7,8 @@ library(RCurl)
 library(lme4)
 library(ez)
 library(lattice)
+library(ggplot2)
+
 
 options(scipen=999)
 
@@ -105,7 +107,7 @@ fligner.test(palouse_sumloss_aggregate$cube_loss, palouse_sumloss_aggregate$year
 #Modeling
 
 #subset dataset to limit commodities and damage causes 
-xx <- subset(palouse_sumloss_aggregate_sqroot, commodity == "BARLEY")
+xx <- subset(palouse_sumloss_aggregate, commodity == "BARLEY")
 xxx <- subset(xx, damagecause == "Drought" | damagecause == "Heat" | damagecause == "Hail" | damagecause == "Frost" | damagecause == "Freeze" | damagecause == "Excessive Moisture/Precip/Rain" | damagecause == "Cold Winter" | damagecause == "Cold Wet Weather")
 
 #xyplot
@@ -120,15 +122,14 @@ summary(glht(model.a, linfct=mcp(year="Tukey")), test = adjusted(type = "bonferr
 
 
 #reduce counties to three.  So xxxx has 6 damage causes, one commodity, three counties, and 27 years
-xxxx <- subset(xxx, county == "Whitman" | county == "Lincoln" | county == "Adams")
+#xxxx <- subset(xxx, county == "Whitman" | county == "Lincoln" | county == "Adams")
 
-library(ggplot2)
-ggplot(xxxx,aes(year, cube_loss, group=interaction(county,damagecause), col=county, shape=damagecause )) + 
-  facet_grid(~damagecause) +
-  geom_line(aes(y=cube_loss, lty=commodity), size=0.8) +
-  geom_point(alpha = 0.3) + 
-  geom_hline(yintercept=0, linetype="dashed") +
-  theme_bw()
+#ggplot(xxxx,aes(year, cube_loss, group=interaction(county,damagecause), col=county, shape=damagecause )) + 
+#  facet_grid(~damagecause) +
+#  geom_line(aes(y=cube_loss, lty=commodity), size=0.8) +
+#  geom_point(alpha = 0.3) + 
+#  geom_hline(yintercept=0, linetype="dashed") +
+#  theme_bw()
 
 
 #AOV using ezANOVA.  Use only damagecause as between because it takes a long 
