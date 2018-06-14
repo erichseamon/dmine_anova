@@ -115,7 +115,7 @@ xyplot(cube_loss ~ year|county, groups=damagecause, type= c("p", "r"), scales=li
 
 #linear mixed model
 model.a <- lmer(cube_loss ~ year + (1 | county/damagecause), data=xxx)
-
+summary(model.a)
 
 require(multcomp)
 summary(glht(model.a, linfct=mcp(year="Tukey")), test = adjusted(type = "bonferroni"))
